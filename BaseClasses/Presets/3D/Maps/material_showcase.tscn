@@ -82,14 +82,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6150701, 0.6464844, 1.1969
 floor_max_angle = 1.2514011
 floor_snap_length = 0.29
 speed_multiplier = 1.73
-walk_speed = 10.0
+walk_speed = 6.285
 deceleration = 44.66
-instant_movement = false
 gravity_scale = 1.625
 jump_velocity = 8.105
 coyote_time = 0.1
 auto_jump = true
 rotation_mode = 2
+push_force_per_kg = 8.0
 
 [node name="MeshInstance3D" parent="Player/CharacterController" index="0" unique_id=594554719]
 mesh = SubResource("CapsuleMesh_qxcy2")
@@ -277,7 +277,7 @@ size = Vector3(0.095214844, 0.14648438, 0.044433594)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="RigidBodies" unique_id=1556388131]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2349586, 9.427765)
-mass = 12.743
+mass = 1.624
 physics_material_override = SubResource("PhysicsMaterial_vs2cy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBodies/RigidBody3D" unique_id=1953797231]
@@ -309,7 +309,7 @@ mesh = SubResource("BoxMesh_pvu3t")
 
 [node name="RigidBody3D4" type="RigidBody3D" parent="RigidBodies" unique_id=1919125778]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.051175, 13.613603)
-mass = 50.0
+mass = 3.476
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBodies/RigidBody3D4" unique_id=646510324]
 shape = SubResource("BoxShape3D_bc0ym")

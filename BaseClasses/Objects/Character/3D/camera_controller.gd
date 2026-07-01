@@ -49,6 +49,10 @@ signal distance_changed(distance: float)
 ## Defaults to the same height as third_person_pivot_offset (actual head
 ## height) rather than sitting above it. Adjust independently as needed.
 @export var first_person_eye_offset: Vector3 = Vector3(0.0, 1.6, 0.0)
+## When true, third_person_pivot_offset rotates with the camera's yaw so
+## the offset stays relative to the camera's facing direction (useful for
+## over-the-shoulder cameras that orbit the target).
+@export var shoulder_offset_rotates_with_yaw: bool = false
 ## How fast the rig's position eases between the third-person and
 ## first-person offsets when switching modes (higher = snappier, avoids
 ## an instant camera pop on the switch).
@@ -230,6 +234,8 @@ func _update_mode() -> void:
 
 func _apply_transform() -> void:
 	var offset := first_person_eye_offset if _mode == CameraMode.FIRST_PERSON else third_person_pivot_offset
+	if _mode == CameraMode.THIRD_PERSON and shoulder_offset_rotates_with_yaw:
+		offset = offset.rotated(Vector3.UP, _yaw)
 	global_position = target.global_position + offset
 
 	rotation.y = _yaw

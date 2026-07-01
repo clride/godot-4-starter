@@ -1,0 +1,23 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://tclt2upx2o4v"]
+
+[ext_resource type="Texture2D" uid="uid://bm37qqbulrqhu" path="res://BaseClasses/Assets/Materials/PBR/Snow/Snow014_1K-JPG_AmbientOcclusion.jpg" id="AmbientOcclusion"]
+[ext_resource type="Texture2D" uid="uid://d3ru6mamsjffh" path="res://BaseClasses/Assets/Materials/PBR/Snow/Snow014_1K-JPG_Color.jpg" id="Color"]
+[ext_resource type="Texture2D" uid="uid://c276gsc4vkarn" path="res://BaseClasses/Assets/Materials/PBR/Snow/Snow014_1K-JPG_Displacement.jpg" id="Displacement"]
+[ext_resource type="Texture2D" uid="uid://jyqu5belwo3v" path="res://BaseClasses/Assets/Materials/PBR/Snow/Snow014_1K-JPG_NormalGL.jpg" id="NormalGL"]
+[ext_resource type="Texture2D" uid="uid://b1p5n4de2cy7k" path="res://BaseClasses/Assets/Materials/PBR/Snow/Snow014_1K-JPG_Roughness.jpg" id="Roughness"]
+
+[resource]
+albedo_texture = ExtResource("Color")
+roughness_texture = ExtResource("Roughness")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("NormalGL")
+ao_enabled = true
+ao_texture = ExtResource("AmbientOcclusion")
+ao_texture_channel = 4
+heightmap_enabled = true
+heightmap_scale = 1.0
+heightmap_texture = ExtResource("Displacement")
+uv1_scale = Vector3(0.255, 0.255, 0.255)
+uv1_triplanar = true
+uv1_world_triplanar = true

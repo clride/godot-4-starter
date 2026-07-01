@@ -1,0 +1,5 @@
+Font: Public-Pixel
+Top padding: 8
+Interword: 0
+Kerning: 0
+txt2img.sh -f Public-Pixel -t8 -i0 -k0 file.txt 

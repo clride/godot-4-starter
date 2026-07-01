@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dnt3p26crnoyp"
 path.s3tc="res://.godot/imported/Grass005_1K-JPG_Roughness.jpg-9d7cc4ad4d1b9158d7bed2b936840461.s3tc.ctex"
+path.etc2="res://.godot/imported/Grass005_1K-JPG_Roughness.jpg-9d7cc4ad4d1b9158d7bed2b936840461.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://BaseClasses/Assets/Materials/PBR/Grass/Grass005_1K-JPG_Roughness.jpg"
-dest_files=["res://.godot/imported/Grass005_1K-JPG_Roughness.jpg-9d7cc4ad4d1b9158d7bed2b936840461.s3tc.ctex"]
+dest_files=["res://.godot/imported/Grass005_1K-JPG_Roughness.jpg-9d7cc4ad4d1b9158d7bed2b936840461.s3tc.ctex", "res://.godot/imported/Grass005_1K-JPG_Roughness.jpg-9d7cc4ad4d1b9158d7bed2b936840461.etc2.ctex"]
 
 [params]
 

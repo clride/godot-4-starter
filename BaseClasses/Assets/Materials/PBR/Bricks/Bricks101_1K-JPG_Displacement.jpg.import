@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8km3452ekrun"
 path.s3tc="res://.godot/imported/Bricks101_1K-JPG_Displacement.jpg-61c53f4e7074a97461930b75f25b9747.s3tc.ctex"
+path.etc2="res://.godot/imported/Bricks101_1K-JPG_Displacement.jpg-61c53f4e7074a97461930b75f25b9747.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://BaseClasses/Assets/Materials/PBR/Bricks/Bricks101_1K-JPG_Displacement.jpg"
-dest_files=["res://.godot/imported/Bricks101_1K-JPG_Displacement.jpg-61c53f4e7074a97461930b75f25b9747.s3tc.ctex"]
+dest_files=["res://.godot/imported/Bricks101_1K-JPG_Displacement.jpg-61c53f4e7074a97461930b75f25b9747.s3tc.ctex", "res://.godot/imported/Bricks101_1K-JPG_Displacement.jpg-61c53f4e7074a97461930b75f25b9747.etc2.ctex"]
 
 [params]
 

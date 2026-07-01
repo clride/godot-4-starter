@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://i17jdr2e2an7"
 path.s3tc="res://.godot/imported/Planks030A_1K-JPG_NormalGL.jpg-c509b4cd729ec9d97e591c7494467a0b.s3tc.ctex"
+path.etc2="res://.godot/imported/Planks030A_1K-JPG_NormalGL.jpg-c509b4cd729ec9d97e591c7494467a0b.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://BaseClasses/Assets/Materials/PBR/Wood/Planks030A_1K-JPG_NormalGL.jpg"
-dest_files=["res://.godot/imported/Planks030A_1K-JPG_NormalGL.jpg-c509b4cd729ec9d97e591c7494467a0b.s3tc.ctex"]
+dest_files=["res://.godot/imported/Planks030A_1K-JPG_NormalGL.jpg-c509b4cd729ec9d97e591c7494467a0b.s3tc.ctex", "res://.godot/imported/Planks030A_1K-JPG_NormalGL.jpg-c509b4cd729ec9d97e591c7494467a0b.etc2.ctex"]
 
 [params]
 

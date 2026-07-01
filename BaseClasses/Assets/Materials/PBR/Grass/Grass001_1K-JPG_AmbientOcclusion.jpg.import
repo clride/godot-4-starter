@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://btiyqo3ssus35"
 path.s3tc="res://.godot/imported/Grass001_1K-JPG_AmbientOcclusion.jpg-b081d00a854b50db67970e144fbd05c9.s3tc.ctex"
+path.etc2="res://.godot/imported/Grass001_1K-JPG_AmbientOcclusion.jpg-b081d00a854b50db67970e144fbd05c9.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://BaseClasses/Assets/Materials/PBR/Grass/Grass001_1K-JPG_AmbientOcclusion.jpg"
-dest_files=["res://.godot/imported/Grass001_1K-JPG_AmbientOcclusion.jpg-b081d00a854b50db67970e144fbd05c9.s3tc.ctex"]
+dest_files=["res://.godot/imported/Grass001_1K-JPG_AmbientOcclusion.jpg-b081d00a854b50db67970e144fbd05c9.s3tc.ctex", "res://.godot/imported/Grass001_1K-JPG_AmbientOcclusion.jpg-b081d00a854b50db67970e144fbd05c9.etc2.ctex"]
 
 [params]
 

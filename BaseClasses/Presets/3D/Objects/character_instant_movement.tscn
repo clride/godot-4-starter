@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b8l63eevml0yd"]
+
+[ext_resource type="Script" uid="uid://d284vg774ttsk" path="res://BaseClasses/Objects/Character/3D/character_controller.gd" id="1_ksxra"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4jgsm"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ct1bv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yvvwk"]
+
+[node name="CharacterController" type="CharacterBody3D" unique_id=1180919320]
+script = ExtResource("1_ksxra")
+instant_movement = true
+metadata/_custom_type_script = "uid://d284vg774ttsk"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=594554719]
+mesh = SubResource("CapsuleMesh_4jgsm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=246201553]
+shape = SubResource("CapsuleShape3D_ct1bv")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1819332282]
+transform = Transform3D(0.33783817, 0, 0, 0, -0.01826644, 0, 0, 0, 0.21246439, 0.015516698, 0.4817171, 0.44898325)
+mesh = SubResource("BoxMesh_yvvwk")

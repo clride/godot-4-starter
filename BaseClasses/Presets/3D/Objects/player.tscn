@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cjj5e5gky6typ"]
+
+[ext_resource type="PackedScene" uid="uid://b8l63eevml0yd" path="res://BaseClasses/Presets/3D/Objects/character_instant_movement.tscn" id="1_l2djm"]
+[ext_resource type="Material" uid="uid://7ralxbntw4of" path="res://BaseClasses/Assets/Materials/PBR/Plastic/Plastic013A_1K-JPG.tres" id="2_g3ex3"]
+[ext_resource type="PackedScene" uid="uid://bgkk8d7hvba6p" path="res://BaseClasses/Presets/3D/Objects/camera_controller.tscn" id="2_qkeue"]
+[ext_resource type="Script" uid="uid://bf2rcg3ril1dp" path="res://BaseClasses/Objects/Health/health_component.gd" id="3_g3ex3"]
+[ext_resource type="Script" uid="uid://dnxlyj80bknyy" path="res://BaseClasses/Objects/Health/health_regenerator.gd" id="4_cbabm"]
+
+[node name="Player" type="Node3D" unique_id=1832197987]
+
+[node name="CharacterController" parent="." unique_id=1180919320 node_paths=PackedStringArray("rotation_reference", "camera_controller", "movement_basis_node") instance=ExtResource("1_l2djm")]
+rotation_reference = NodePath("../CameraController")
+camera_controller = NodePath("../CameraController")
+movement_basis_node = NodePath("../CameraController")
+
+[node name="MeshInstance3D" parent="CharacterController" index="0" unique_id=594554719]
+material_override = ExtResource("2_g3ex3")
+
+[node name="CameraController" parent="." unique_id=301514567 node_paths=PackedStringArray("target") instance=ExtResource("2_qkeue")]
+target = NodePath("../CharacterController")
+
+[node name="Heath" type="Node3D" parent="." unique_id=1078057861]
+script = ExtResource("3_g3ex3")
+
+[node name="HealthRegenerator" type="Node3D" parent="Heath" unique_id=1089638503]
+script = ExtResource("4_cbabm")
+
+[editable path="CharacterController"]

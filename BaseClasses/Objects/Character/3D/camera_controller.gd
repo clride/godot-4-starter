@@ -58,6 +58,14 @@ signal distance_changed(distance: float)
 ## an instant camera pop on the switch).
 @export var offset_smoothing: float = 10.0
 
+## When true, `visibility_target` is hidden in first person and shown in
+## third person (prevents the character mesh from clipping into the camera).
+@export var hide_target_in_first_person: bool = false
+## The node hidden/shown when switching camera modes. Typically the
+## character's visual root (e.g. a MeshInstance3D or an armature/Skeleton3D).
+## Defaults to `target` if left unset.
+@export var visibility_target: Node3D
+
 @export_group("Look")
 @export var mouse_sensitivity: float = 0.0035
 @export var controller_sensitivity: float = 2.5 # radians/sec at full stick deflection
@@ -119,6 +127,7 @@ func _ready() -> void:
 	_target_distance = default_distance
 	_current_distance = default_distance
 	_mode = CameraMode.FIRST_PERSON if default_distance <= first_person_threshold else CameraMode.THIRD_PERSON
+	_update_visibility()
 
 	if capture_mouse_on_ready:
 		set_mouse_captured(true)
@@ -226,6 +235,7 @@ func _update_mode() -> void:
 	if new_mode != _mode:
 		_mode = new_mode
 		mode_changed.emit(_mode)
+		_update_visibility()
 
 
 # ---------------------------------------------------------------------------
@@ -247,6 +257,14 @@ func _apply_transform() -> void:
 # ---------------------------------------------------------------------------
 # Mouse capture
 # ---------------------------------------------------------------------------
+
+func _update_visibility() -> void:
+	if not hide_target_in_first_person:
+		return
+	var node := visibility_target if visibility_target != null else target
+	if node == null:
+		return
+	node.visible = _mode != CameraMode.FIRST_PERSON
 
 func set_mouse_captured(captured: bool) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if captured else Input.MOUSE_MODE_VISIBLE

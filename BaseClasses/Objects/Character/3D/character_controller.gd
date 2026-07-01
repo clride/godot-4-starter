@@ -95,6 +95,9 @@ signal moved(direction: Vector3, speed: float)
 @export var jump_velocity: float = 4.5
 ## Optional grace period (seconds) after leaving a ledge where jump still works.
 @export var coyote_time: float = 0.0
+## When true, holding the jump button will auto-jump on every landing
+## frame (no need to re-press). Works with coyote_time as usual.
+@export var auto_jump: bool = false
 
 @export_group("Slope")
 ## Steepest slope, in degrees, the character can walk up. Drives
@@ -323,8 +326,12 @@ func _handle_jump(delta: float) -> void:
 
 	if not can_jump:
 		return
-	if not Input.is_action_just_pressed(jump_action):
-		return
+	if auto_jump:
+		if not Input.is_action_pressed(jump_action):
+			return
+	else:
+		if not Input.is_action_just_pressed(jump_action):
+			return
 	if not (is_on_floor() or _coyote_timer > 0.0):
 		return
 

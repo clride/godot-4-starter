@@ -94,12 +94,15 @@ push_force_per_kg = 8.0
 [node name="MeshInstance3D" parent="Player/CharacterController" index="0" unique_id=594554719]
 mesh = SubResource("CapsuleMesh_qxcy2")
 
-[node name="CameraController" parent="Player" index="1" unique_id=301514567]
+[node name="CameraController" parent="Player" index="1" unique_id=301514567 node_paths=PackedStringArray("visibility_target")]
 first_person_eye_offset = Vector3(0, 0.78, 0)
 hide_target_in_first_person = true
+visibility_target = NodePath("../CharacterController")
+require_hold_to_look_in_third_person = true
 max_distance = 24.415
 zoom_step = 1.0
 zoom_smoothing = 5.005
+fov = 80.0
 
 [node name="Geometry" type="Node" parent="." unique_id=1815616747]
 

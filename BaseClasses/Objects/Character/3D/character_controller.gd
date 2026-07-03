@@ -101,15 +101,6 @@ signal moved(direction: Vector3, speed: float)
 ## frame (no need to re-press). Works with coyote_time as usual.
 @export var auto_jump: bool = false
 
-@export_group("Slope")
-## Steepest slope, in degrees, the character can walk up. Drives
-## CharacterBody3D's built-in floor_max_angle; anything steeper is treated
-## as a wall instead of floor.
-@export var max_slope_angle: float = 45.0:
-	set(value):
-		max_slope_angle = value
-		floor_max_angle = deg_to_rad(value)
-
 @export_group("Rotation")
 @export var rotation_mode: RotationMode = RotationMode.FACE_MOVE_DIRECTION
 ## Used when rotation_mode == FACE_REFERENCE; the character matches this

@@ -23,8 +23,11 @@ extends Node3D
 ## to camera yaw at all - so there's no need to force-capture the mouse
 ## just to look around. In that specific combination, the cursor is shown
 ## and camera rotation only happens while the right mouse button is held.
-## This does not affect controller stick look, which still free-looks
-## regardless of mouse/right-click state.
+## The cursor stays visible even while turning, and is pinned to the exact
+## screen position where the right mouse button was pressed, so it never
+## drifts or hits a screen edge while dragging. This does not affect
+## controller stick look, which still free-looks regardless of
+## mouse/right-click state.
 
 
 # ---------------------------------------------------------------------------
@@ -145,6 +148,11 @@ var _right_click_held: bool = false
 ## mouse capture state on the frame it actually changes (rather than
 ## fighting the user's own set_mouse_captured() calls every frame).
 var _hold_to_look_was_active: bool = false
+## True while the cursor is visible and pinned in place during a
+## right-click drag in hold-to-look mode.
+var _free_look_dragging: bool = false
+## Screen position the cursor is pinned to while _free_look_dragging is true.
+var _free_look_lock_position: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -174,7 +182,7 @@ func _ready() -> void:
 	# capture state immediately instead of waiting for the first _process.
 	_hold_to_look_was_active = _is_hold_to_look_active()
 	if _hold_to_look_was_active:
-		set_mouse_captured(_right_click_held)
+		_set_free_look_dragging(_right_click_held)
 
 
 func _build_rig() -> void:
@@ -206,6 +214,7 @@ func _process(delta: float) -> void:
 
 	_update_look_capture_state()
 	_apply_controller_look(delta)
+	_apply_free_look_drag()
 	_update_distance(delta)
 	_update_mode()
 	_apply_transform()
@@ -216,20 +225,42 @@ func _process(delta: float) -> void:
 # ---------------------------------------------------------------------------
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and _mouse_look_input_enabled():
 		_add_look_delta(event.relative.x * mouse_sensitivity, event.relative.y * mouse_sensitivity)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			_right_click_held = event.pressed
-			# Only hold-to-look manages capture off of right click; outside
-			# that mode, right click is left free for other uses (e.g.
-			# context actions) without touching the cursor.
+			# Only hold-to-look manages the cursor off of right click;
+			# outside that mode, right click is left free for other uses
+			# (e.g. context actions) without touching the cursor.
 			if _is_hold_to_look_active():
-				set_mouse_captured(_right_click_held)
+				_set_free_look_dragging(_right_click_held)
 		elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			zoom(-zoom_step)
 		elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			zoom(zoom_step)
+
+## True while mouse motion events should drive camera look via their
+## relative field. Only applies to normal full capture (first person, or
+## third person outside hold-to-look); the pinned-cursor drag used in
+## hold-to-look is driven separately by _apply_free_look_drag().
+func _mouse_look_input_enabled() -> bool:
+	return Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+
+## While dragging in hold-to-look mode, reads how far the cursor has moved
+## from its pinned position, feeds that into the look delta, then warps the
+## cursor back so it appears stationary on screen. Runs once per frame
+## instead of per input event so the correction never has to fight event
+## batching.
+func _apply_free_look_drag() -> void:
+	if not _free_look_dragging:
+		return
+	var current_position := get_viewport().get_mouse_position()
+	var motion := current_position - _free_look_lock_position
+	if motion == Vector2.ZERO:
+		return
+	_add_look_delta(motion.x * mouse_sensitivity, motion.y * mouse_sensitivity)
+	get_viewport().warp_mouse(_free_look_lock_position)
 
 func _apply_controller_look(delta: float) -> void:
 	if not _controller_look_available:
@@ -274,16 +305,28 @@ func _update_look_capture_state() -> void:
 		return
 
 	if active:
-		# Entering hold-to-look: show the cursor unless right click already
+		# Entering hold-to-look: cursor visible unless right click already
 		# happens to be held down at the moment conditions became true.
-		set_mouse_captured(_right_click_held)
+		_set_free_look_dragging(_right_click_held)
 	else:
 		# Leaving hold-to-look (switched to first person, or rotation_mode
 		# changed away from FACE_MOVE_DIRECTION): go back to fully captured,
 		# matching this rig's normal default behavior.
+		_free_look_dragging = false
 		set_mouse_captured(true)
 
 	_hold_to_look_was_active = active
+
+## Cursor state used specifically for hold-to-look. The cursor is always
+## visible in this mode. `dragging = true` pins it to the screen position
+## it was at the moment the drag started (recorded here), so it never
+## visibly moves while the camera turns; `dragging = false` releases the
+## pin and lets it move freely again.
+func _set_free_look_dragging(dragging: bool) -> void:
+	_free_look_dragging = dragging
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if dragging:
+		_free_look_lock_position = get_viewport().get_mouse_position()
 
 
 # ---------------------------------------------------------------------------

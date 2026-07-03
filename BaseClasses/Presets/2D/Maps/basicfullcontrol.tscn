@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c12281s1hjrwh"]
+
+[ext_resource type="Texture2D" uid="uid://cu2h6o77ui16f" path="res://icon.svg" id="1_v8t4y"]
+[ext_resource type="Script" uid="uid://boqlcrisd1vxr" path="res://BaseClasses/Objects/Character/2D/character_controller_platformer.gd" id="2_b5epj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1wdx"]
+size = Vector2(2228.5, 598.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bc0ym"]
+size = Vector2(114, 119.5)
+
+[node name="Basicfullcontrol" type="Node2D" unique_id=1994341943]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=352497083]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1998951563]
+position = Vector2(990, 861)
+shape = SubResource("RectangleShape2D_r1wdx")
+
+[node name="Icon" type="Sprite2D" parent="StaticBody2D" unique_id=275716241]
+position = Vector2(1001, 866)
+scale = Vector2(19.620718, 4.835484)
+texture = ExtResource("1_v8t4y")
+
+[node name="CharacterController2D" type="CharacterBody2D" parent="." unique_id=244440352]
+script = ExtResource("2_b5epj")
+instant_movement = true
+metadata/_custom_type_script = "uid://boqlcrisd1vxr"
+
+[node name="Icon" type="Sprite2D" parent="CharacterController2D" unique_id=497450277]
+position = Vector2(628, 421)
+texture = ExtResource("1_v8t4y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterController2D" unique_id=1384319367]
+position = Vector2(628, 416.25)
+shape = SubResource("RectangleShape2D_bc0ym")

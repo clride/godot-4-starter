@@ -4,18 +4,20 @@ extends CharacterBody3D
 ## ----------------------
 ## A 3D character controller: single walk_speed,
 ## simple jump, smooth acceleration/deceleration, and configurable facing
-## behavior. Owns the physics loop (calls move_and_slide itself) and applies
-## gravity inline rather than depending on GravityComponent. move_and_slide()
-## resolves the whole velocity vector in one pass, so anything contributing
-## to velocity needs to live in the same _physics_process/move_and_slide
-## call, not a separately-ticking component. GravityComponent is still
-## useful on its own for non-controller bodies (props, ragdolls, etc).
-##
+## behavior. Owns the physics loop (calls move_and_slide itself).
 ## Input is read directly from Godot's Input singleton using configurable
 ## action names. Make sure matching actions exist in Project > Input Map
 ## (defaults below assume "move_left"/"move_right"/"move_forward"/
 ## "move_back"/"jump").
-
+##
+## Rigidbody pushing: applies a continuous, mass-scaled force to any
+## RigidBody3D the character slides into, using only the horizontal
+## component of the collision normal. Collisions with a mostly-vertical
+## normal (standing on top of a body, or being pushed from below) are
+## skipped, since those aren't "walking into" contacts and are the main
+## cause of edge/corner launching from my experience. Multiple contacts against the same
+## RigidBody3D in one frame are merged into a single averaged push instead
+## of stacking.
 
 # ---------------------------------------------------------------------------
 # Enums
@@ -29,7 +31,7 @@ enum RotationMode {
 
 enum AirControlMode {
 	FULL,     ## Full directional control while airborne, same as being grounded.
-	PARTIAL,  ## Reduced control while airborne, scaled by separate acceleration/deceleration control amounts.
+	PARTIAL,  ## Reduced control while airborne, scaled by separate acceleration/deceleration control amounts. NOTE: Is ignored if 'Instant Movement' is true. 
 }
 
 enum CharacterState {
@@ -95,15 +97,9 @@ signal moved(direction: Vector3, speed: float)
 @export var jump_velocity: float = 4.5
 ## Optional grace period (seconds) after leaving a ledge where jump still works.
 @export var coyote_time: float = 0.0
-
-@export_group("Slope")
-## Steepest slope, in degrees, the character can walk up. Drives
-## CharacterBody3D's built-in floor_max_angle; anything steeper is treated
-## as a wall instead of floor.
-@export var max_slope_angle: float = 45.0:
-	set(value):
-		max_slope_angle = value
-		floor_max_angle = deg_to_rad(value)
+## When true, holding the jump button will auto-jump on every landing
+## frame (no need to re-press). Works with coyote_time as usual.
+@export var auto_jump: bool = false
 
 @export_group("Rotation")
 @export var rotation_mode: RotationMode = RotationMode.FACE_MOVE_DIRECTION
@@ -128,6 +124,22 @@ signal moved(direction: Vector3, speed: float)
 @export var input_forward_action: String = "move_forward"
 @export var input_back_action: String = "move_back"
 @export var jump_action: String = "jump"
+
+@export_group("Rigidbody Push")
+## If false, the character will slide against RigidBody3D obstacles as if
+## they were static (no push force applied).
+@export var push_enabled: bool = true
+## Continuous push force applied per kg of the rigidbody being pushed.
+## Tune this rather than treating it like the old impulse magnitude - this
+## is a force (integrated over the physics step by the engine), not a kick.
+@export var push_force_per_kg: float = 6.0
+## Hard cap on push force regardless of mass, so very light bodies can't be
+## launched by a single frame of contact.
+@export var max_push_force: float = 40.0
+## Collision normals with an absolute Y component above this are treated
+## as "standing on top of" / "pushed from below" contacts and are excluded
+## from pushing. This is what prevents edge/corner launching.
+@export var push_vertical_normal_cutoff: float = 0.7
 
 
 # ---------------------------------------------------------------------------
@@ -156,6 +168,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_check_floor_transition()
 	_update_state(world_move_dir)
+	_apply_rigidbody_push()
 
 	if world_move_dir != Vector3.ZERO:
 		_last_move_direction = world_move_dir
@@ -323,8 +336,12 @@ func _handle_jump(delta: float) -> void:
 
 	if not can_jump:
 		return
-	if not Input.is_action_just_pressed(jump_action):
-		return
+	if auto_jump:
+		if not Input.is_action_pressed(jump_action):
+			return
+	else:
+		if not Input.is_action_just_pressed(jump_action):
+			return
 	if not (is_on_floor() or _coyote_timer > 0.0):
 		return
 
@@ -332,6 +349,55 @@ func _handle_jump(delta: float) -> void:
 	_coyote_timer = 0.0
 	_jumped_this_frame = true
 	jumped.emit()
+
+
+# ---------------------------------------------------------------------------
+# Rigidbody pushing
+# ---------------------------------------------------------------------------
+
+## Applies a continuous, mass-scaled push force to any RigidBody3D the
+## character is in slide contact with this frame. Only the horizontal
+## component of each collision normal is used, and contacts with a mostly
+## vertical normal (standing on top, or pushed from below) are excluded -
+## that's what stops edge/corner contacts from launching the body. Multiple
+## contacts against the same body in one frame are merged into a single
+## averaged direction instead of applying force once per contact.
+func _apply_rigidbody_push() -> void:
+	if not push_enabled:
+		return
+
+	# collider -> accumulated horizontal push direction (not yet normalized)
+	var accumulated: Dictionary = {}
+
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		var collider := collision.get_collider()
+		if not (collider is RigidBody3D):
+			continue
+
+		var normal := collision.get_normal()
+		if absf(normal.y) > push_vertical_normal_cutoff:
+			continue
+
+		normal.y = 0.0
+		if normal.length() < 0.0001:
+			continue
+		normal = normal.normalized()
+
+		if accumulated.has(collider):
+			accumulated[collider] += normal
+		else:
+			accumulated[collider] = normal
+
+	for collider in accumulated.keys():
+		var dir: Vector3 = accumulated[collider]
+		if dir.length() < 0.0001:
+			continue
+		dir = dir.normalized()
+
+		var rb := collider as RigidBody3D
+		var force_mag: float = min(rb.mass * push_force_per_kg, max_push_force)
+		rb.apply_central_force(-dir * force_mag)
 
 
 # ---------------------------------------------------------------------------

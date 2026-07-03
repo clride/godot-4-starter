@@ -1,0 +1,36 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://cfvwjhqwm2vk5"
+path="res://.godot/imported/Not Jam Mono Prophet 8.ttf-643fc7e08423b0401c63b1952f1b02de.fontdata"
+
+[deps]
+
+source_file="res://BaseClasses/Assets/Fonts/NotJamFontPack/Not Jam Mono Prophet 8/Not Jam Mono Prophet 8.ttf"
+dest_files=["res://.godot/imported/Not Jam Mono Prophet 8.ttf-643fc7e08423b0401c63b1952f1b02de.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+disable_embedded_bitmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+modulate_color_glyphs=false
+hinting=3
+subpixel_positioning=4
+keep_rounding_remainders=true
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[]
+language_support={}
+script_support={}
+opentype_features={}

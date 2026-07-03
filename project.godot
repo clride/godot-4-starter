@@ -12,8 +12,13 @@ config_version=5
 
 config/name="Godot 4 Starter Project"
 run/main_scene="uid://ceir25eldac7v"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 
 [dotnet]
 
@@ -54,6 +59,7 @@ jump={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+3d/default_gravity=16.726
 
 [rendering]
 

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bglu4cvvbcmdv"]
+
+[ext_resource type="Script" uid="uid://l5wv6ed2fosq" path="res://BaseClasses/Objects/Character/2D/character_controller_topdown.gd" id="1_s7yrq"]
+[ext_resource type="Texture2D" uid="uid://cu2h6o77ui16f" path="res://icon.svg" id="2_j6b8w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1wdx"]
+size = Vector2(120, 119)
+
+[node name="Rpg" type="Node2D" unique_id=247040580]
+
+[node name="CharacterControllerTopDown2D" type="CharacterBody2D" parent="." unique_id=1770107700 node_paths=PackedStringArray("facing_node")]
+script = ExtResource("1_s7yrq")
+speed_multiplier = 2.9050000000000002
+instant_movement = true
+facing_node = NodePath("Icon")
+metadata/_custom_type_script = "uid://l5wv6ed2fosq"
+
+[node name="Icon" type="Sprite2D" parent="CharacterControllerTopDown2D" unique_id=876215712]
+position = Vector2(119, 82)
+texture = ExtResource("2_j6b8w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterControllerTopDown2D" unique_id=1574082819]
+position = Vector2(121, 84.5)
+shape = SubResource("RectangleShape2D_r1wdx")

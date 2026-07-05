@@ -1,4 +1,4 @@
-class_name CharacterController2D
+class_name CharacterControllerPlatformer2D
 extends CharacterBody2D
 ## CharacterController2D
 ## ----------------------

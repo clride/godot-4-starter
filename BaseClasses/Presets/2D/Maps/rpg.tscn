@@ -10,7 +10,7 @@ size = Vector2(120, 119)
 
 [node name="CharacterControllerTopDown2D" type="CharacterBody2D" parent="." unique_id=1770107700 node_paths=PackedStringArray("facing_node")]
 script = ExtResource("1_s7yrq")
-speed_multiplier = 2.9050000000000002
+speed_multiplier = 2.905
 instant_movement = true
 facing_node = NodePath("Icon")
 metadata/_custom_type_script = "uid://l5wv6ed2fosq"

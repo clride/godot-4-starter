@@ -1,4 +1,3 @@
 # godot-4-starter
 
-This is a starter template based on Godot 4.7.
-You can use it for all kinds of projects.
+This is a Godot game starter template usable for all kinds of games. It comes packed with fonts, PBR Materials, Shaders and custom classes which are highly customizable.
